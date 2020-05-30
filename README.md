@@ -1,7 +1,7 @@
 
-# Haskell Todo List
+# Haskell To Do List
 
-A simple haskell implementation of a Todo List for managing tasks.
+A simple haskell implementation of a to do list task manager.
 
 # Building
 
