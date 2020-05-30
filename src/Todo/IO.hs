@@ -18,13 +18,12 @@ createTodoFile (file:[]) = do
         putStrLn (fileAlreadyExistsMessage file)
 
 addTaskFile :: [String] -> IO ()
-addTaskFile []                 = putStrLn noTaskFileSpecified
-addTaskFile (_:[])             = putStrLn noTaskSpecifiedMessage
-addTaskFile (file:task:[]) = do
+addTaskFile []           = putStrLn noTaskFileSpecified
+addTaskFile (_:[])       = putStrLn noTaskSpecifiedMessage
+addTaskFile (file:tasks) = do
     todo <- readFile file
-    let tasks = lines todo
-    writeFile file (unlines (addTask tasks task))
-
+    let newTodo = foldl (addTask) (lines todo) tasks
+    writeFile file (unlines newTodo)
 
 removeTaskFile :: [String] -> IO ()
 removeTaskFile []     = putStrLn noTaskFileSpecified
