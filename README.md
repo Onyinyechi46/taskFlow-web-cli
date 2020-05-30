@@ -38,6 +38,10 @@ You need to wash the dog, take out the trash, and pick up the mail.
     $ todo house add "Take out the mail."
     $ todo house add "Pick up the trash."
 
+or to add multiple at once:
+
+    $ todo house add "Walk the dog." "Take out the mail." "Pick up the trash."
+
 Okay let's look at our list:
 
     $ todo house list
@@ -51,8 +55,7 @@ This doesn't pose a problem, we can just remove them, and add them back:
 
     $ todo house delete 2
     $ todo house delete 3
-    $ todo house add "Take out the trash."
-    $ todo house add "Pick up the mail."
+    $ todo house add "Take out the trash." "Pick up the mail."
 
 And now:
 
