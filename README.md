@@ -52,7 +52,11 @@ $ todo house list
 
 ### Delete Incorrect Tasks
 $ todo house delete 2
+Deleted task 2 from the 'house' list.
+
 $ todo house delete 3
+Deleted task 3 from the 'house' list.
+
 
 ### Add Corrected Tasks
 $ todo house list
