@@ -8,17 +8,12 @@ A simple haskell implementation of a to do list task manager.
 Build the Project
 To build the project, run:
 
-bash
-
 cabal build
 This will compile the Haskell source code using Cabal.
 
-# Usage
-
- Command-Line Usage
+# Command-Line Usage
 The application is used via the command line with the following structure:
 
-bash
 todo <list-name> <command> [arguments...]
 
    | Command  | Description                                      |
@@ -29,8 +24,6 @@ todo <list-name> <command> [arguments...]
 | `delete` | Remove a task by its ID from the list.           |
 
 Just specify the name of the todo list you would like to interaction with, and state what you would like to to do with it.
-
-## $ todo house
 
 ### Create A New List
 
@@ -70,16 +63,15 @@ $ todo house list
     $ todo house delete 3
     $ todo house add "Take out the trash." "Pick up the mail."
     
-Features
+## Features
+
 Support for multiple independent to-do lists
-
 Add, view, and remove tasks easily via the terminal
-
 Simple and clean user interface
-
 Built entirely in Haskell, leveraging functional programming principles
 
-License
+## License
+
 This project is open-source and released under the MIT License.
 
 
