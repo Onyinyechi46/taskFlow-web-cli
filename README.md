@@ -32,11 +32,15 @@ $ todo house create
 ### Add Tasks to the List
 
     $ todo house add "Walk the dog."
-    $ todo house add "Take out the mail." "Pick up the trash."
+    
+    $ todo house add "Take out the mail." 
+                     "Pick up the trash."
 
 ### or to add multiple at once:
 
-    $ todo house add "Walk the dog." "Take out the mail." "Pick up the trash."
+    $ todo house add "Walk the dog." 
+                     "Take out the mail." 
+                     "Pick up the trash."
 
 ### View All Tasks
 
