@@ -51,10 +51,8 @@ $ todo house list
 3 - Pick up the trash.
 
 ### Delete Incorrect Tasks
-$ todo house delete 2
 Deleted task 2 from the 'house' list.
 
-$ todo house delete 3
 Deleted task 3 from the 'house' list.
 
 
