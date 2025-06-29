@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>taskFlow - Colored Calendar</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      max-width: 400px;
+      margin: 20px auto;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      font-size: 13px;
+      color: #003366;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin: 5px 0;
+    }
+
+    h1 {
+      font-size: 18px;
+    }
+
+    h2 {
+      font-size: 14px;
+      color: #007bff;
+    }
+
+    #date-time, #countdown-timer {
+      text-align: center;
+      font-size: 11px;
+      color: #555;
+      margin: 5px 0 10px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 6px;
+      font-size: 13px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 8px;
+      font-size: 13px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    #calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      margin: 10px 0;
+      font-size: 11px;
+    }
+
+    .calendar-header {
+      background: #007bff;
+      color: #fff;
+      padding: 3px 0;
+      font-weight: bold;
+      border-radius: 3px;
+    }
+
+    .calendar-day {
+      padding: 5px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .calendar-day:hover {
+      background: #007bff !important;
+      color: white;
+    }
+
+    .calendar-day.weekend {
+      font-weight: bold;
+    }
+
+    .calendar-day.selected {
+      background-color: #004085 !important;
+      color: white !important;
+      font-weight: bold;
+      border: 1px solid #0056b3;
+    }
+
+    #task-list {
+      padding-left: 18px;
+    }
+
+    #task-list li {
+      background: #fff;
+      margin: 5px 0;
+      padding: 6px 8px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .task-meta {
+      font-size: 10px;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    .delete-btn {
+      position: absolute;
+      right: 8px;
+      top: 5px;
+      color: #dc3545;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      color: #a71d2a;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome, Onyinyechi Eze</h1>
+  <h2>📝 taskFlow</h2>
+  <div id="date-time">Loading time...</div>
+  <div id="countdown-timer"></div>
+
+  <form id="task-form">
+    <input type="text" id="task-input" placeholder="New task..." required />
+    <div><strong style="font-size:12px;">Pick due date:</strong></div>
+    <div id="calendar"></div>
+    <button type="submit">Add Task</button>
+  </form>
+
+  <ul id="task-list">
+    <li>
+      <strong>Onchain credentials</strong>
+      <div class="task-meta">Due: 2025-06-01</div>
+      <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+    </li>
+    <li>
+      <strong>Student enrollment</strong>
+      <div class="task-meta">Due: 2025-06-10</div>
+      <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+    </li>
+    <li>
+      <strong>Session with Mr Bernard</strong>
+      <div class="task-meta">Due: 2025-06-15</div>
+      <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+    </li>
+  </ul>
+
+  <script>
+    const form = document.getElementById('task-form');
+    const input = document.getElementById('task-input');
+    const calendar = document.getElementById('calendar');
+    const list = document.getElementById('task-list');
+    const dateTimeDisplay = document.getElementById('date-time');
+    const countdownDisplay = document.getElementById('countdown-timer');
+    let selectedDate = null;
+
+    const colorPalette = [
+      '#e6f7ff', '#fff7e6', '#e6ffe6', '#fff0f5',
+      '#f0f0ff', '#f9f9dc', '#f0fff0'
+    ];
+
+    function updateDateTime() {
+      const now = new Date();
+      dateTimeDisplay.textContent = now.toLocaleString();
+    }
+
+    function updateCountdown() {
+      if (selectedDate) {
+        const now = new Date();
+        const due = new Date(selectedDate + 'T23:59:59');
+        const diff = due - now;
+        if (diff > 0) {
+          const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const m = Math.floor((diff / (1000 * 60)) % 60);
+          const s = Math.floor((diff / 1000) % 60);
+          countdownDisplay.textContent = `⏳ Time left: ${d}d ${h}h ${m}m ${s}s`;
+        } else {
+          countdownDisplay.textContent = "🚨 Due date passed!";
+        }
+      } else {
+        countdownDisplay.textContent = "";
+      }
+    }
+
+    setInterval(() => {
+      updateDateTime();
+      updateCountdown();
+    }, 1000);
+
+    function generateCalendar(year, month) {
+      calendar.innerHTML = '';
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      days.forEach(d => {
+        const head = document.createElement('div');
+        head.className = 'calendar-header';
+        head.textContent = d;
+        calendar.appendChild(head);
+      });
+
+      const firstDay = new Date(year, month).getDay();
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstDay; i++) {
+        calendar.appendChild(document.createElement('div'));
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        const date = new Date(year, month, day);
+        const cell = document.createElement('div');
+        const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+        const bgColor = colorPalette[(day - 1) % colorPalette.length];
+
+        cell.className = 'calendar-day' + (isWeekend ? ' weekend' : '');
+        cell.textContent = day;
+        cell.style.backgroundColor = bgColor;
+
+        cell.onclick = () => {
+          document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+          cell.classList.add('selected');
+          const mm = String(month + 1).padStart(2, '0');
+          const dd = String(day).padStart(2, '0');
+          selectedDate = `${year}-${mm}-${dd}`;
+        };
+
+        calendar.appendChild(cell);
+      }
+    }
+
+    const now = new Date();
+    generateCalendar(now.getFullYear(), now.getMonth());
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const taskText = input.value.trim();
+      if (!taskText) return;
+
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${taskText}</strong>` +
+        (selectedDate ? `<div class="task-meta">Due: ${selectedDate}</div>` : '');
+
+      const del = document.createElement('span');
+      del.className = 'delete-btn';
+      del.textContent = '×';
+      del.onclick = () => li.remove();
+
+      li.appendChild(del);
+      list.appendChild(li);
+      input.value = '';
+      selectedDate = null;
+      countdownDisplay.textContent = '';
+    });
+  </script>
+
+</body>
+</html>
