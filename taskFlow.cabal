@@ -4,10 +4,10 @@ version:             0.1.2.1
 synopsis:            A simple command-line task manager built in Haskell
 description:         A lightweight terminal-based to-do list application written in Haskell.
                      It helps users manage tasks by creating, listing, and deleting items from the command line.
-license:             BSD-3-Clause
+license:             BSD3
 license-file:        LICENSE
-author:              Princess Felix
-maintainer:          your-email@example.com
+author:              Onyinyechi Eze
+maintainer:          onyinyechieze46@gmail.com
 category:            Development
 build-type:          Simple
 extra-source-files:  README.md, CHANGELOG.md
@@ -15,8 +15,11 @@ extra-source-files:  README.md, CHANGELOG.md
 executable taskFlow
   main-is:             Main.hs
   hs-source-dirs:      src
-  build-depends:       base >= 4.12 && < 5,
-                       directory,
-                       strict
-  other-modules:       Todo.IO, Todo.Messages, Todo.List
+  other-modules:       Todo.IO
+  build-depends:
+      base >=4.7 && <5,
+      scotty,
+      wai-middleware-static,
+      text,
+      directory
   default-language:    Haskell2010
